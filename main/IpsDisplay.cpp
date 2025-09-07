@@ -1997,40 +1997,9 @@ void IpsDisplay::drawLift( float speed, float loadFactor, float coeff, float wei
 	// ESP_LOGI(FNAME,"IpsDisplay::drawRetroDisplay  TE=%0.1f  x0:%d y0:%d x2:%d y2:%d", te, x0, y0, x2,y2 );
 
 	// G load digital
-	if( (int)(loadFactor*30) != _ate && !(tick%3) ) {
-		drawAvgVario( AMIDX+38, AMIDY, loadFactor, true );
-		_ate = (int)(loadFactor*30);
-	}
-	// Min/Max values
-	if( old_gmax != gload_pos_max.get() || !(tick%10)) {
-		if( gload_pos_max.get() < gload_pos_limit.get() )
-			ucg->setColor(  COLOR_WHITE  );
-		else
-			ucg->setColor(  COLOR_RED  );
-		ucg->setFont(ucg_font_fub20_hr, true);
-		ucg->setPrintPos(120,105);
-		ucg->printf("  %+1.2f   ", gload_pos_max.get() );
-		old_gmax = gload_pos_max.get();
-	}
-	if( old_gmin != gload_neg_max.get() || !(tick%10)){
-		if( gload_neg_max.get() > gload_neg_limit.get() )
-			ucg->setColor(  COLOR_WHITE  );
-		else
-			ucg->setColor(  COLOR_RED  );
-		ucg->setFont(ucg_font_fub20_hr, true);
-		ucg->setPrintPos(125,235);
-		ucg->printf("  %+1.2f   ", gload_neg_max.get() );
-		old_gmin = gload_neg_max.get();
-	}
-	if( old_ias_max != airspeed_max.get() || !(tick%10)){
-		if( airspeed_max.get() < v_max.get() )
-			ucg->setColor(  COLOR_WHITE  );
-		else
-			ucg->setColor(  COLOR_RED  );
-		ucg->setFont(ucg_font_fub20_hr, true);
-		ucg->setPrintPos(125,295);
-		ucg->printf("  %3d   ", Units::AirspeedRounded( airspeed_max.get() ) );
-		old_ias_max = airspeed_max.get();
+	if( (int)(liftUsed*30) != _ate && !(tick%3) ) {
+		drawAvgVario( AMIDX+38, AMIDY, liftUsed, true );
+		_ate = (int)(liftUsed*30);
 	}
 
 	if( !(tick%10)){
