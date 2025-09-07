@@ -1948,16 +1948,46 @@ void IpsDisplay::drawLoadDisplay( float loadFactor ){
 	xSemaphoreGive(spiMutex);
 }
 
+
+void IpsDisplay::initLiftDisplay(){
+	if( _menu )
+		return;
+	ESP_LOGI(FNAME,"initLiftDisplay()");
+	xSemaphoreTake(spiMutex,portMAX_DELAY);
+	ucg->setColor( COLOR_HEADER );
+	ucg->setFont(ucg_font_fub11_hr);
+	ucg->setPrintPos(20,20);
+	ucg->print( "Normal Lift" );
+	drawLoadDisplayTexts();
+
+	for( float a=0.9; a<1.0; a+=0.01 ) {
+		drawOneScaleLine( a*M_PI_2, 140, 150, 2, COLOR_RED );
+	}
+	for( float a=0.8; a<0.9; a+=0.01 ) {
+		drawOneScaleLine( a*M_PI_2, 140, 150, 2, COLOR_ORANGE );
+	}
+	for( float a=0.55; a>0.65; a-=0.01 ) {
+		drawOneScaleLine( a*M_PI_2, 140, 150, 2, COLOR_WHITE );
+	}
+
+	initGauge(1, false); // no logarithmic gauge for g-load
+	drawScale( 1, 0, 140, 1 );
+	indicator->setGeometry(70, 129, 7);
+	xSemaphoreGive(spiMutex);
+	ESP_LOGI(FNAME,"initLiftDisplay end");
+}
+
+
 void IpsDisplay::drawLift( float speed, float loadFactor, float coeff, float weight ){
-	// ESP_LOGI(FNAME,"drawLoadDisplay %1.1f tick: %d", loadFactor, tick );
+	// ESP_LOGI(FNAME,"drawLiftDisplay %1.1f tick: %d", loadFactor, tick );
 	if( _menu )
 		return;
 	tick++;
 
-	if( !(screens_init & INIT_DISPLAY_GLOAD) ){
+	if( !(screens_init & INIT_DISPLAY_LIFT) ){
 		clear();
 		initLoadDisplay();
-		screens_init |= INIT_DISPLAY_GLOAD;
+		screens_init |= INIT_DISPLAY_LIFT;
 	}
 	xSemaphoreTake(spiMutex,portMAX_DELAY );
 	// draw G pointer
