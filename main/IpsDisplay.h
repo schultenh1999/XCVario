@@ -39,6 +39,7 @@ public:
 	static void drawWarning( const char *warn, bool push=false );
 	static void drawLoadDisplay( float loadFactor );
 	static void drawHorizon( float pitch, float roll, float yaw );
+	static void drawLift( float stallspeed, float loadFactor, float coeff, float weight )
 	static void drawLoadDisplayTexts();
 	static void drawBow( float a, int16_t &old_a_level, int16_t l1, ucg_color_t color );
 	static void initDisplay();
